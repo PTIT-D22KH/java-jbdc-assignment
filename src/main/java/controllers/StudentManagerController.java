@@ -179,17 +179,23 @@ public class StudentManagerController {
                 String className = view.getClassNameTxtField().getText();
                 String gpaString = view.getGpaTxtField().getText();
                 if (checkInput(id, name, className, gpaString)) {
-                    double gpa = Double.parseDouble(gpaString);
-                    if (isExistStudent(id)) {
-                        JOptionPane.showMessageDialog(view, "Mã sinh viên đã tồn tại!");
-                    } else {
-                        Student student = new Student(id, name, className, gpa);
-                        try {
-                            studentDao.add(student);
-                            renderTable();
-                        } catch (SQLException exception) {
+                    try {
+                        double gpa = Double.parseDouble(gpaString);
+                        if (isExistStudent(id)) {
+                            JOptionPane.showMessageDialog(view, "Mã sinh viên đã tồn tại!");
+                        } else {
+                            Student student = new Student(id, name, className, gpa);
+                            try {
+                                studentDao.add(student);
+                                renderTable();
+                            } catch (SQLException exception) {
+                            }
                         }
+                    } catch (NumberFormatException exception) {
+                        JOptionPane.showMessageDialog(view, "GPA phải là 1 số thực!");
                     }
+                    
+                    
 
                 } else {
                     JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin!");
